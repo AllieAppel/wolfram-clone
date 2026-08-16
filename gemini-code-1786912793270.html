@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wolfram|Alpha Clone UI</title>
+    <!-- Include MathJax for rendering mathematical equations nicely -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --orange-red: #ff7e42;
+            --dark-bg: #1a1a1a;
+            --light-bg: #fdfdfd;
+            --border-color: #d6d6d6;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            color: #222;
+            margin-bottom: 20px;
+        }
+
+        h1 span {
+            color: var(--orange-red);
+            font-weight: bold;
+        }
+
+        .search-box {
+            display: flex;
+            border: 2px solid var(--orange-red);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            background: #fff;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            background-color: var(--orange-red);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #e56d33;
+        }
+
+        #results-container {
+            margin-top: 30px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-size: 1rem;
+            color: #777;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .loader {
+            display: none;
+            margin: 20px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--orange-red);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-container">
+    <h1>Wolfram|<span>Alpha</span> Clone</h1>
+    <div class="search-box">
+        <input type="text" id="query" placeholder="Enter what you want to calculate or know about..." autofocus>
+        <button onclick="computeQuery()">=</button>
+    </div>
+    
+    <div class="loader" id="loader"></div>
+    <div id="results-container"></div>
+</div>
+
+<script>
+    async function computeQuery() {
+        const query = document.getElementById('query').value.trim();
+        const resultsContainer = document.getElementById('results-container');
+        const loader = document.getElementById('loader');
+
+        if (!query) return;
+
+        // Clear previous results & show loader
+        resultsContainer.innerHTML = '';
+        loader.style.display = 'block';
+
+        try {
+            // NOTE: To make this a true working clone, you would route this 
+            // to a backend service using the Wolfram|Alpha Full Results API or an LLM endpoint.
+            // Below is a simulation placeholder showcasing how results layout.
+            
+            setTimeout(() => {
+                loader.style.display = 'none';
+                
+                // Mocking response blocks similar to Wolfram Alpha pods
+                resultsContainer.innerHTML = `
+                    <div class="card">
+                        <h3>Input interpretation</h3>
+                        <p><code>${query}</code></p>
+                    </div>
+                    <div class="card">
+                        <h3>Results / Answer</h3>
+                        <p>Simulated computed result for: <strong>${query}</strong></p>
+                        <p><em>To connect real computational engines, integrate the Wolfram Alpha API or a backend math solver like SymPy.</em></p>
+                    </div>
+                `;
+            }, 1000);
+
+        } catch (error) {
+            loader.style.display = 'none';
+            resultsContainer.innerHTML = `<div class="card"><h3>Error</h3><p>Failed to process query.</p></div>`;
+        }
+    }
+
+    // Allow pressing "Enter" to search
+    document.getElementById('query').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            computeQuery();
+        }
+    });
+</script>
+
+</body>
+</html>
